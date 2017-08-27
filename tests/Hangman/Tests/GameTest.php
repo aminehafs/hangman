@@ -29,4 +29,10 @@ class GameTest extends \PHPUnit\Framework\TestCase
         // la lettre n'a pas ete trouver pcq l'utilisateur a saisie p
         $this->assertFalse($game->isLetterFound('h'));
     }
+
+    public function testGetRemainingAttemptsAreEqualsAtStart()
+    {
+        $game = new Game(new Word('php'));
+        $this->assertEquals($game::MAX_ATTEMPTS, $game->getRemainingAttempts());
+    }
 }
