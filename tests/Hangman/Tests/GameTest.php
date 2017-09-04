@@ -10,7 +10,6 @@ class GameTest extends \PHPUnit\Framework\TestCase
     public static $dataGoodLetters = array(
         array('p'),
         array('h'),
-        array('p')
     );
 
     public static $dataBadLetters = array(
