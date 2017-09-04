@@ -7,32 +7,68 @@ use Hangman\Word;
 
 class GameTest extends \PHPUnit\Framework\TestCase
 {
-    public function testisLetterFound()
+    public static $dataGoodLetters = array(
+        array('p'),
+        array('h'),
+        array('p')
+    );
+
+    public static $dataBadLetters = array(
+        array('e'),
+        array('x'),
+    );
+
+    private $game;
+
+    public function setUp()
     {
-        $game = new Game(new Word('php'));
+        $this->game = new Game(new Word('php'));
+    }
 
+    public function getDataGoodLetters()
+    {
+        return self::$dataGoodLetters;
+    }
 
+    public function getDataBadLetters()
+    {
+        return self::$dataBadLetters;
+    }
+
+    public function testGameHasStart()
+    {
+        $this->assertFalse($this->game->isWon());
+
+        return $this->game;
+    }
+
+    /**
+     * @dataProvider getDataGoodLetters
+     */
+    public function testisLetterFound($lettre)
+    {
         // result prend la lettre que l'utilisateur a choisi
-        $game->tryLetter('p');
+        $this->game->tryLetter($lettre);
 
         // permet de verifier si la letttre a ete trouver dans le  mot
-        $this->assertTrue($game->isLetterFound('p'));
+        $this->assertTrue($this->game->isLetterFound($lettre));
 
     }
 
-    public function testIsLetterNotFound()
+    /**
+     * @dataProvider getDataBadLetters
+     */
+    public function testIsLetterNotFound($letter)
     {
-        $game = new Game(new Word('php'));
-        $game->tryLetter('p');
+        $this->game->tryLetter($letter);
 
         // permet de verifier si la letttre n'a pas ete trouver dans le  mot
         // la lettre n'a pas ete trouver pcq l'utilisateur a saisie p
-        $this->assertFalse($game->isLetterFound('h'));
+        $this->assertFalse($this->game->isLetterFound($letter));
     }
 
     public function testGetRemainingAttemptsAreEqualsAtStart()
     {
-        $game = new Game(new Word('php'));
-        $this->assertEquals($game::MAX_ATTEMPTS, $game->getRemainingAttempts());
+        $this->assertEquals(Game::MAX_ATTEMPTS, $this->game->getRemainingAttempts());
     }
 }
